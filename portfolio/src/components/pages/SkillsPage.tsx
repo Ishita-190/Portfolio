@@ -231,14 +231,14 @@ export default function SkillsPage({ onBack }: SkillsPageProps) {
         style={{ width: "100%", height: "100%" }}
       />
 
-      <div ref={titleRowRef} className="relative z-20 flex items-center justify-center pt-16 pb-4">
+      <div ref={titleRowRef} className="relative z-20 flex items-center justify-center pt-8 pb-3">
         {"SKILLS".split("").map((l, i) => (
           <span
             key={i}
             ref={el => { lettersRef.current[i] = el; }}
             className="font-serif italic text-[#4B3621] select-none"
             style={{
-              fontSize: "clamp(3.5rem, 9vw, 6rem)",
+              fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)",
               letterSpacing: "0.18em",
               display: "inline-block",
               filter: "url(#crayon)",
@@ -267,7 +267,7 @@ export default function SkillsPage({ onBack }: SkillsPageProps) {
               <button
                 ref={el => { nodeRefs.current[cat.id] = el; }}
                 onClick={() => handleSelect(cat.id)}
-                className="flex items-center gap-2 rounded-full px-6 py-3 font-serif text-lg italic tracking-wide transition-all duration-200"
+                className="flex items-center gap-2 rounded-full px-4 py-2 font-serif text-sm italic tracking-wide transition-all duration-200"
                 style={{
                   background: isActive ? "#4B3621" : "#FAF6F0",
                   border: `2px solid ${isActive ? "#4B3621" : "#7A5230"}`,

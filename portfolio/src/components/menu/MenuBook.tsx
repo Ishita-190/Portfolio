@@ -4,17 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { playClick } from "@/lib/sound";
 import SkillsPage from "@/components/pages/SkillsPage";
+import ProjectsPage from "@/components/pages/ProjectsPage";
 
 interface MenuBookProps {
   onBack: () => void;
 }
 
-type Page = "menu" | "skills";
+type Page = "menu" | "skills" | "projects";
 
 const ITEMS: { label: string; page: Page | null }[] = [
   { label: "About",      page: null },
-  { label: "Skills",     page: "skills" },
-  { label: "Projects",   page: null },
+  { label: "Skills",     page: "skills" as Page },
+  { label: "Projects",   page: "projects" as Page },
   { label: "Experience", page: null },
   { label: "Contact",    page: null },
 ];
@@ -90,19 +91,20 @@ export default function MenuBook({ onBack }: MenuBookProps) {
       .set(underline, { scaleX: 0, opacity: 1 });
   };
 
-  if (page === "skills") return <SkillsPage onBack={() => setPage("menu")} />;
+  if (page === "skills")   return <SkillsPage   onBack={() => setPage("menu")} />;
+  if (page === "projects") return <ProjectsPage onBack={() => setPage("menu")} />;
 
   return (
     <div ref={wrapperRef} className="relative min-h-screen overflow-hidden bg-[#F3ECE2]">
       <div ref={menuContentRef} className="absolute inset-0 flex items-center justify-center">
-        <div className="mx-auto w-full max-w-2xl rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-12 py-14 shadow-[0_16px_60px_rgba(75,54,33,0.12)]">
+        <div className="mx-auto w-full max-w-md rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-8 py-8 shadow-[0_16px_60px_rgba(75,54,33,0.12)]">
           <p className="mb-2 text-center font-serif text-xs tracking-[0.35em] text-[#8A7463] uppercase">The</p>
-          <h1 className="mb-10 text-center font-serif text-4xl italic text-[#4B3621]">Menu</h1>
+          <h1 className="mb-6 text-center font-serif text-3xl italic text-[#4B3621]">Menu</h1>
 
-          <div className="flex flex-col gap-5 text-center font-serif text-lg text-[#4B3621]">
+          <div className="flex flex-col gap-3 text-center font-serif text-base text-[#4B3621]">
             {ITEMS.map((item, i) => (
               <div key={item.label}>
-                {i > 0 && <div className="h-px bg-[#C9B8A5] mb-5" />}
+                {i > 0 && <div className="h-px bg-[#C9B8A5] mb-3" />}
                 <button
                   ref={el => { itemRefs.current[i] = el; }}
                   onClick={() => handleItemClick(i, item.page)}
@@ -119,7 +121,7 @@ export default function MenuBook({ onBack }: MenuBookProps) {
             ))}
           </div>
 
-          <div className="mt-12 flex justify-center">
+          <div className="mt-6 flex justify-center">
             <button
               ref={backBtnRef}
               onClick={handleBack}
@@ -150,7 +152,7 @@ export default function MenuBook({ onBack }: MenuBookProps) {
           />
           <div className="text-center select-none">
             <p className="font-serif text-sm tracking-[0.35em] text-[#8A7463] uppercase">Welcome!</p>
-            <h1 className="mt-1 font-serif text-5xl italic text-[#4B3621]">Ishita Shah</h1>
+            <h1 className="mt-1 font-serif text-3xl italic text-[#4B3621]">Ishita Shah</h1>
           </div>
         </div>
       </div>

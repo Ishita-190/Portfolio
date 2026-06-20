@@ -148,12 +148,12 @@ export default function CoverPage() {
 
       <div
         ref={containerRef}
-        className="relative flex w-full max-w-lg flex-col items-center rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-10 py-14 shadow-[0_16px_60px_rgba(75,54,33,0.12)]"
-        style={{ minHeight: "560px" }}
+        className="relative flex w-full max-w-md flex-col items-center rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-8 py-10 shadow-[0_16px_60px_rgba(75,54,33,0.12)]"
+        style={{ minHeight: "480px" }}
       >
         <div ref={welcomeRef} className="mb-6 text-center">
           <p className="font-serif text-sm tracking-[0.35em] text-[#8A7463] uppercase">Welcome!</p>
-          <h1 className="mt-1 font-serif text-5xl italic text-[#4B3621]">Ishita Sati</h1>
+          <h1 className="mt-1 font-serif text-4xl italic text-[#4B3621]">Ishita Sati</h1>
         </div>
 
         <div ref={dividerTopRef} className="mb-10 h-px w-full origin-center bg-[#C9B8A5]" />
@@ -164,9 +164,9 @@ export default function CoverPage() {
           </p>
 
           <div ref={itemsRef} className="flex flex-col items-center gap-3">
-            <span className="font-serif text-2xl italic text-[#4B3621]">Full Stack Development</span>
-            <span className="font-serif text-2xl italic text-[#4B3621]">Open-Source Work</span>
-            <span className="font-serif text-2xl italic text-[#4B3621]">Interactive Experiences</span>
+            <span className="font-serif text-xl italic text-[#4B3621]">Full Stack Development</span>
+            <span className="font-serif text-xl italic text-[#4B3621]">Open-Source Work</span>
+            <span className="font-serif text-xl italic text-[#4B3621]">Interactive Experiences</span>
           </div>
 
           <p ref={estRef} className="mt-10 font-serif text-sm tracking-[0.4em] text-[#A0917E]">
