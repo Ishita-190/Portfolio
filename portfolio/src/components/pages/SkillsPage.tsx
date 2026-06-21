@@ -25,28 +25,35 @@ interface LeafGroup {
 }
 
 export default function SkillsPage({ onBack }: SkillsPageProps) {
-  const lettersRef    = useRef<(HTMLSpanElement | null)[]>([]);
-  const titleRowRef   = useRef<HTMLDivElement>(null);
-  const svgRef        = useRef<SVGSVGElement>(null);
-  const nodeRefs      = useRef<Record<string, HTMLButtonElement | null>>({});
-  const connPathRefs  = useRef<SVGPathElement[]>([]);
-  const leafGroups    = useRef<Record<string, LeafGroup>>({});
-  const prevId        = useRef<string | null>(null);
+  const lettersRef  = useRef<(HTMLSpanElement | null)[]>([]);
+  const titleRowRef = useRef<HTMLDivElement>(null);
+  const svgRef      = useRef<SVGSVGElement>(null);
+  const nodeRefs    = useRef<Record<string, HTMLButtonElement | null>>({});
+  const connPathRefs = useRef<SVGPathElement[]>([]);
+  const leafGroups  = useRef<Record<string, LeafGroup>>({});
+  const prevId      = useRef<string | null>(null);
   const [active, setActive] = useState<string | null>(null);
   const [, setPhase]        = useState<"intro" | "ready">("intro");
 
   useEffect(() => {
-    gsap.set(lettersRef.current, { opacity: 0, y: 40, scale: 0.7 });
+    const validLetters = lettersRef.current.filter(el => el !== null);
+    if (validLetters.length > 0) {
+      gsap.set(validLetters, { opacity: 0, y: 40, scale: 0.7 });
+    }
 
     const tl = gsap.timeline({ onComplete: () => setPhase("ready") });
 
-    tl.to(lettersRef.current, {
+    if (validLetters.length > 0) {
+      tl.to(validLetters, {
         opacity: 1, y: 0, scale: 1,
         duration: 0.6, stagger: 0.12, ease: "back.out(1.4)",
-      })
-      .to(titleRowRef.current, {
+      });
+    }
+    if (titleRowRef.current) {
+      tl.to(titleRowRef.current, {
         y: -20, duration: 0.7, ease: "power2.inOut", delay: 0.3,
       });
+    }
 
     skills.forEach((s, i) => {
       const el = nodeRefs.current[s.id];
@@ -214,24 +221,26 @@ export default function SkillsPage({ onBack }: SkillsPageProps) {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#F3ECE2]">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#F3ECE2]" style={{ backgroundImage: "url(/bg.png)", backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="absolute inset-0 bg-[#F3ECE2]/60 z-0" />
 
-      <svg width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" seed="3" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
+      <div className="relative z-10 w-full min-h-screen">
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" seed="3" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
 
-      <svg
-        ref={svgRef}
-        className="pointer-events-none absolute inset-0 z-10"
-        style={{ width: "100%", height: "100%" }}
-      />
+        <svg
+          ref={svgRef}
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{ width: "100%", height: "100%" }}
+        />
 
-      <div ref={titleRowRef} className="relative z-20 flex items-center justify-center pt-8 pb-3">
+        <div ref={titleRowRef} className="relative z-20 flex items-center justify-center pt-8 pb-3">
         {"SKILLS".split("").map((l, i) => (
           <span
             key={i}
@@ -302,6 +311,7 @@ export default function SkillsPage({ onBack }: SkillsPageProps) {
           <span className="relative z-10">← Back to Menu</span>
           <span className="absolute inset-0 -translate-x-full bg-[#4B3621] transition-transform duration-300 group-hover:translate-x-0" />
         </button>
+      </div>
       </div>
     </div>
   );

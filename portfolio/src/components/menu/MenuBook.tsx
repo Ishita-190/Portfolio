@@ -7,15 +7,16 @@ import SkillsPage from "@/components/pages/SkillsPage";
 import ProjectsPage from "@/components/pages/ProjectsPage";
 import ExperiencePage from "@/components/pages/ExperiencePage";
 import ContactPage from "@/components/pages/ContactPage";
+import AboutPage from "@/components/pages/AboutPage";
 
 interface MenuBookProps {
   onBack: () => void;
 }
 
-type Page = "menu" | "skills" | "projects" | "experience" | "contact";
+type Page = "menu" | "about" | "skills" | "projects" | "experience" | "contact";
 
 const ITEMS: { label: string; page: Page | null }[] = [
-  { label: "About",      page: null },
+  { label: "About",      page: "about" as Page },
   { label: "Skills",     page: "skills" as Page },
   { label: "Projects",   page: "projects" as Page },
   { label: "Experience", page: "experience" as Page },
@@ -38,41 +39,72 @@ export default function MenuBook({ onBack }: MenuBookProps) {
 
     const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-    gsap.set(peelRef.current,        { x: "0%" });
-    gsap.set(menuContentRef.current, { opacity: 0 });
-    gsap.set(shadowRef.current,      { opacity: 0, x: "0%" });
-    gsap.set(backBtnRef.current,     { opacity: 0, y: 10 });
-    gsap.set(itemRefs.current,       { opacity: 0, y: 12 });
-    gsap.set(underlineRefs.current,  { scaleX: 0, transformOrigin: "left center" });
+    if (peelRef.current) gsap.set(peelRef.current, { x: "0%" });
+    if (menuContentRef.current) gsap.set(menuContentRef.current, { opacity: 0 });
+    if (shadowRef.current) gsap.set(shadowRef.current, { opacity: 0, x: "0%" });
+    if (backBtnRef.current) gsap.set(backBtnRef.current, { opacity: 0, y: 10 });
 
-    tl
-      .to(shadowRef.current,      { opacity: 1, duration: 0.2 })
-      .to(peelRef.current,        { x: "-100%", duration: 1.1, ease: "power2.inOut" }, "-=0.1")
-      .to(shadowRef.current,      { x: "-100%", duration: 1.1, ease: "power2.inOut" }, "<")
-      .to(peelFaceRef.current,    { skewY: -4, duration: 0.4, ease: "power1.in" }, 0.3)
-      .to(menuContentRef.current, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.4")
-      .to(itemRefs.current, {
-          opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out",
-        }, "-=0.2")
-      .to(backBtnRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "-=0.2");
+    const validItems = itemRefs.current.filter(el => el !== null) as HTMLButtonElement[];
+    if (validItems.length > 0) gsap.set(validItems, { opacity: 0, y: 12 });
+
+    const validUnderlines = underlineRefs.current.filter(el => el !== null) as HTMLSpanElement[];
+    if (validUnderlines.length > 0) gsap.set(validUnderlines, { scaleX: 0, transformOrigin: "left center" });
+
+    if (shadowRef.current) {
+      tl.to(shadowRef.current, { opacity: 1, duration: 0.2 });
+    }
+
+    if (peelRef.current) {
+      tl.to(peelRef.current, { x: "-100%", duration: 1.1, ease: "power2.inOut" }, "-=0.1");
+    }
+
+    if (shadowRef.current) {
+      tl.to(shadowRef.current, { x: "-100%", duration: 1.1, ease: "power2.inOut" }, "<");
+    }
+
+    if (peelFaceRef.current) {
+      tl.to(peelFaceRef.current, { skewY: -4, duration: 0.4, ease: "power1.in" }, 0.3);
+    }
+
+    if (menuContentRef.current) {
+      tl.to(menuContentRef.current, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.4");
+    }
+
+    if (validItems.length > 0) {
+      tl.to(validItems, {
+        opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out",
+      }, "-=0.2");
+    }
+
+    if (backBtnRef.current) {
+      tl.to(backBtnRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "-=0.2");
+    }
   }, [page]);
 
   const handleBack = () => {
     playClick();
     const tl = gsap.timeline({ onComplete: onBack });
-    tl
-      .to(backBtnRef.current,     { opacity: 0, y: 10, duration: 0.25, ease: "power2.in" })
-      .to(menuContentRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<")
-      .set(peelRef.current,   { x: "-100%" })
-      .set(shadowRef.current, { x: "-100%", opacity: 1 })
-      .to(peelRef.current,    { x: "0%", duration: 1.0, ease: "power2.inOut" })
-      .to(shadowRef.current,  { x: "0%", duration: 1.0, ease: "power2.inOut" }, "<");
+    if (backBtnRef.current) {
+      tl.to(backBtnRef.current, { opacity: 0, y: 10, duration: 0.25, ease: "power2.in" });
+    }
+    if (menuContentRef.current) {
+      tl.to(menuContentRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<");
+    }
+    if (peelRef.current) tl.set(peelRef.current, { x: "-100%" });
+    if (shadowRef.current) tl.set(shadowRef.current, { x: "-100%", opacity: 1 });
+    if (peelRef.current) {
+      tl.to(peelRef.current, { x: "0%", duration: 1.0, ease: "power2.inOut" });
+    }
+    if (shadowRef.current) {
+      tl.to(shadowRef.current, { x: "0%", duration: 1.0, ease: "power2.inOut" }, "<");
+    }
   };
 
   const handleItemClick = (idx: number, targetPage: Page | null) => {
     playClick();
     const btn       = itemRefs.current[idx];
     const underline = underlineRefs.current[idx];
+    if (!btn || !underline) return;
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -93,14 +125,20 @@ export default function MenuBook({ onBack }: MenuBookProps) {
       .set(underline, { scaleX: 0, opacity: 1 });
   };
 
+  if (page === "about")      return <AboutPage      onBack={() => setPage("menu")} />;
   if (page === "skills")     return <SkillsPage     onBack={() => setPage("menu")} />;
   if (page === "projects")   return <ProjectsPage   onBack={() => setPage("menu")} />;
   if (page === "experience") return <ExperiencePage onBack={() => setPage("menu")} />;
   if (page === "contact")    return <ContactPage    onBack={() => setPage("menu")} />;
 
   return (
-    <div ref={wrapperRef} className="relative min-h-screen overflow-hidden bg-[#F3ECE2]">
-      <div ref={menuContentRef} className="absolute inset-0 flex items-center justify-center">
+    <div
+      ref={wrapperRef}
+      className="relative min-h-screen overflow-hidden bg-[#F3ECE2]"
+      style={{ backgroundImage: "url(/bg.png)", backgroundSize: "cover", backgroundPosition: "center" }}
+    >
+      <div className="absolute inset-0 bg-[#F3ECE2]/60 z-0" />
+      <div ref={menuContentRef} className="absolute inset-0 flex items-center justify-center z-10">
         <div className="mx-auto w-full max-w-md rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-8 py-8 shadow-[0_16px_60px_rgba(75,54,33,0.12)]">
           <p className="mb-2 text-center font-serif text-xs tracking-[0.35em] text-[#8A7463] uppercase">The</p>
           <h1 className="mb-6 text-center font-serif text-3xl italic text-[#4B3621]">Menu</h1>

@@ -23,20 +23,39 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
   const isAnimating       = useRef(false);
 
   useEffect(() => {
-    gsap.set(cascadeRefs.current, { opacity: 0, y: 200, rotation: 0, scale: 0.85 });
-    gsap.set(titleRef.current,    { opacity: 0, y: -30 });
-    gsap.set(rolodexRef.current,  { opacity: 0 });
-    gsap.set(cardRef.current,     { opacity: 0, y: 30 });
-    gsap.set(stackRef.current,    { opacity: 0 });
-    gsap.set(counterRef.current,  { opacity: 0 });
-    gsap.set(controlsRef.current, { opacity: 0, y: 12 });
-    gsap.set(backRef.current,     { opacity: 0 });
+    const validCascades = cascadeRefs.current.filter(el => el !== null);
+    if (validCascades.length > 0) {
+      gsap.set(validCascades, { opacity: 0, y: 200, rotation: 0, scale: 0.85 });
+    }
+    if (titleRef.current) {
+      gsap.set(titleRef.current,    { opacity: 0, y: -30 });
+    }
+    if (rolodexRef.current) {
+      gsap.set(rolodexRef.current,  { opacity: 0 });
+    }
+    if (cardRef.current) {
+      gsap.set(cardRef.current,     { opacity: 0, y: 30 });
+    }
+    if (stackRef.current) {
+      gsap.set(stackRef.current,    { opacity: 0 });
+    }
+    if (counterRef.current) {
+      gsap.set(counterRef.current,  { opacity: 0 });
+    }
+    if (controlsRef.current) {
+      gsap.set(controlsRef.current, { opacity: 0, y: 12 });
+    }
+    if (backRef.current) {
+      gsap.set(backRef.current,     { opacity: 0 });
+    }
 
     const angles = [-12, -6, 0, 6, 12];
     const yOff   = [-8, -4, 0, 4, 8];
 
-    gsap.timeline()
-      .to(cascadeRefs.current, {
+    const tl = gsap.timeline();
+
+    if (validCascades.length > 0) {
+      tl.to(validCascades, {
         opacity: 1,
         y: (i) => yOff[i] ?? 0,
         rotation: (i) => angles[i] ?? 0,
@@ -44,8 +63,8 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
         duration: 0.6,
         stagger: 0.12,
         ease: "back.out(1.4)",
-      })
-      .to(cascadeRefs.current, {
+      });
+      tl.to(validCascades, {
         rotation: 0,
         y: 0,
         scale: 1,
@@ -53,12 +72,16 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
         stagger: 0.07,
         ease: "power3.out",
         delay: 0.3,
-      })
-      .to(titleRef.current, {
+      });
+    }
+    if (titleRef.current) {
+      tl.to(titleRef.current, {
         opacity: 1, y: 0,
         duration: 0.6, ease: "back.out(1.3)",
-      }, "-=0.3")
-      .to(cascadeRefs.current, {
+      }, "-=0.3");
+    }
+    if (validCascades.length > 0) {
+      tl.to(validCascades, {
         opacity: 0,
         y: -50,
         scale: 0.92,
@@ -66,16 +89,29 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
         duration: 0.4,
         ease: "power2.in",
         delay: 0.35,
-      })
-      .to(rolodexRef.current, {
+      });
+    }
+    if (rolodexRef.current) {
+      tl.to(rolodexRef.current, {
         opacity: 1, duration: 0.5, ease: "power2.out",
-      }, "-=0.25")
-      .to(cardRef.current,     { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.35")
-      .to(stackRef.current,    { opacity: 1, duration: 0.35 }, "-=0.1")
-      .to(counterRef.current,  { opacity: 1, duration: 0.35 }, "<")
-      .to(controlsRef.current, { opacity: 1, y: 0, duration: 0.35 }, "-=0.1")
-      .to(backRef.current,     { opacity: 1, duration: 0.3 }, "-=0.1")
-      .call(() => setPhase("ready"));
+      }, "-=0.25");
+    }
+    if (cardRef.current) {
+      tl.to(cardRef.current,     { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.35");
+    }
+    if (stackRef.current) {
+      tl.to(stackRef.current,    { opacity: 1, duration: 0.35 }, "-=0.1");
+    }
+    if (counterRef.current) {
+      tl.to(counterRef.current,  { opacity: 1, duration: 0.35 }, "<");
+    }
+    if (controlsRef.current) {
+      tl.to(controlsRef.current, { opacity: 1, y: 0, duration: 0.35 }, "-=0.1");
+    }
+    if (backRef.current) {
+      tl.to(backRef.current,     { opacity: 1, duration: 0.3 }, "-=0.1");
+    }
+    tl.call(() => setPhase("ready"));
   }, []);
 
   const flipTo = (dir: 1 | -1) => {
@@ -108,49 +144,51 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
   const project = projects[index];
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#F3ECE2] px-8 py-10">
+    <div className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#F3ECE2] px-8 py-10" style={{ backgroundImage: "url(/bg.png)", backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="absolute inset-0 bg-[#F3ECE2]/60 z-0" />
 
-      <svg width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <filter id="crayon-p" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" seed="5" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
+      <div className="relative z-10 flex flex-col items-center w-full">
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <filter id="crayon-p" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" seed="5" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
 
-      <div
-        ref={titleRef}
-        className="relative z-20 mb-5 font-serif italic text-[#4B3621] select-none"
-        style={{
-          fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-          letterSpacing: "0.1em",
-          filter: "url(#crayon-p)",
-          textShadow: "1px 1px 0 rgba(75,54,33,0.1)",
-        }}
-      >
-        Projects
-      </div>
-
-      {phase === "cascade" && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          {projects.map((p, i) => (
-            <div
-              key={p.id}
-              ref={el => { cascadeRefs.current[i] = el; }}
-              className="absolute w-full max-w-lg rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-8 py-6 shadow-[0_20px_60px_rgba(75,54,33,0.14)]"
-              style={{ zIndex: projects.length - i }}
-            >
-              <div className="mb-3 font-serif text-[10px] tracking-[0.4em] text-[#8A7463] uppercase">
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              <h2 className="font-serif text-3xl italic text-[#4B3621]">{p.title}</h2>
-            </div>
-          ))}
+        <div
+          ref={titleRef}
+          className="relative z-20 mb-5 font-serif italic text-[#4B3621] select-none"
+          style={{
+            fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+            letterSpacing: "0.1em",
+            filter: "url(#crayon-p)",
+            textShadow: "1px 1px 0 rgba(75,54,33,0.1)",
+          }}
+        >
+          Projects
         </div>
-      )}
 
-      <div ref={rolodexRef} className="relative z-20 flex w-full max-w-lg flex-col items-center">
+        {phase === "cascade" && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            {projects.map((p, i) => (
+              <div
+                key={p.id}
+                ref={el => { cascadeRefs.current[i] = el; }}
+                className="absolute w-full max-w-lg rounded-2xl border border-[#D6C8B5] bg-[#FAF6F0] px-8 py-6 shadow-[0_20px_60px rgba(75,54,33,0.14)]"
+                style={{ zIndex: projects.length - i }}
+              >
+                <div className="mb-3 font-serif text-[10px] tracking-[0.4em] text-[#8A7463] uppercase">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <h2 className="font-serif text-3xl italic text-[#4B3621]">{p.title}</h2>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div ref={rolodexRef} className="relative z-20 flex w-full max-w-lg flex-col items-center">
 
         <div ref={counterRef} className="mb-4 self-start font-serif text-xs italic tracking-[0.3em] text-[#8A7463]">
           {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
@@ -212,6 +250,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
             <span className="absolute inset-0 -translate-x-full bg-[#4B3621] transition-transform duration-300 group-hover:translate-x-0" />
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

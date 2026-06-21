@@ -12,7 +12,15 @@ export default function MusicToggle() {
   const bar3        = useRef<HTMLDivElement>(null);
   const audioRef    = useRef<HTMLAudioElement | null>(null);
   const spinTween   = useRef<gsap.core.Tween | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+  const startPos = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    setPosition({ x: window.innerWidth - 280, y: 20 });
+  }, []);
 
   useEffect(() => {
     audioRef.current = new Audio("/music/Sade.mp3");
@@ -114,8 +122,46 @@ export default function MusicToggle() {
     }
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    startPos.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    };
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging.current) return;
+    setPosition({
+      x: e.clientX - startPos.current.x,
+      y: e.clientY - startPos.current.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
   return (
-    <div className="fixed top-5 right-5 z-50">
+    <div
+      ref={containerRef}
+      className="fixed z-50 cursor-grab active:cursor-grabbing"
+      style={{
+        left: position.x,
+        top: position.y,
+      }}
+      onMouseDown={handleMouseDown}
+    >
       <div
         className="flex items-center gap-3 rounded-full px-4 py-2.5 shadow-lg"
         style={{
@@ -161,7 +207,10 @@ export default function MusicToggle() {
         </div>
 
         <button
-          onClick={toggleMusic}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleMusic();
+          }}
           aria-label="Toggle music"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4B3621] text-[#FAF6F0] shadow transition-transform duration-150 hover:scale-105 active:scale-95"
         >

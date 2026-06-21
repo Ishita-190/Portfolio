@@ -128,7 +128,6 @@ export default function CoverPage() {
 
   useEffect(() => {
     if (!menuOpen) runAnimations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuOpen]);
 
   const handleOpenMenu = () => {
@@ -180,7 +179,7 @@ export default function CoverPage() {
           <div ref={itemsRef} className="flex flex-col items-center gap-3">
             <span className="font-serif text-xl italic text-[#4B3621]">Full Stack Development</span>
             <span className="font-serif text-xl italic text-[#4B3621]">Open-Source Work</span>
-            <span className="font-serif text-xl italic text-[#4B3621]">Interactive Experiences</span>
+            <span className="font-serif text-xl italic text-[#4B3621]">Machine Learning Projects</span>
           </div>
 
           <p ref={estRef} className="mt-10 font-serif text-sm tracking-[0.4em] text-[#A0917E]">
