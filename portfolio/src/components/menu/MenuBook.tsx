@@ -5,19 +5,21 @@ import gsap from "gsap";
 import { playClick } from "@/lib/sound";
 import SkillsPage from "@/components/pages/SkillsPage";
 import ProjectsPage from "@/components/pages/ProjectsPage";
+import ExperiencePage from "@/components/pages/ExperiencePage";
+import ContactPage from "@/components/pages/ContactPage";
 
 interface MenuBookProps {
   onBack: () => void;
 }
 
-type Page = "menu" | "skills" | "projects";
+type Page = "menu" | "skills" | "projects" | "experience" | "contact";
 
 const ITEMS: { label: string; page: Page | null }[] = [
   { label: "About",      page: null },
   { label: "Skills",     page: "skills" as Page },
   { label: "Projects",   page: "projects" as Page },
-  { label: "Experience", page: null },
-  { label: "Contact",    page: null },
+  { label: "Experience", page: "experience" as Page },
+  { label: "Contact",    page: "contact" as Page },
 ];
 
 export default function MenuBook({ onBack }: MenuBookProps) {
@@ -91,8 +93,10 @@ export default function MenuBook({ onBack }: MenuBookProps) {
       .set(underline, { scaleX: 0, opacity: 1 });
   };
 
-  if (page === "skills")   return <SkillsPage   onBack={() => setPage("menu")} />;
-  if (page === "projects") return <ProjectsPage onBack={() => setPage("menu")} />;
+  if (page === "skills")     return <SkillsPage     onBack={() => setPage("menu")} />;
+  if (page === "projects")   return <ProjectsPage   onBack={() => setPage("menu")} />;
+  if (page === "experience") return <ExperiencePage onBack={() => setPage("menu")} />;
+  if (page === "contact")    return <ContactPage    onBack={() => setPage("menu")} />;
 
   return (
     <div ref={wrapperRef} className="relative min-h-screen overflow-hidden bg-[#F3ECE2]">
@@ -152,7 +156,7 @@ export default function MenuBook({ onBack }: MenuBookProps) {
           />
           <div className="text-center select-none">
             <p className="font-serif text-sm tracking-[0.35em] text-[#8A7463] uppercase">Welcome!</p>
-            <h1 className="mt-1 font-serif text-3xl italic text-[#4B3621]">Ishita Shah</h1>
+            <h1 className="mt-1 font-serif text-3xl italic text-[#4B3621]">Ishita Sati</h1>
           </div>
         </div>
       </div>

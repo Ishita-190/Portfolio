@@ -63,7 +63,14 @@ export default function CoverPage() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
+  const runAnimations = () => {
+    gsap.killTweensOf([
+      welcomeRef.current, dividerTopRef.current, servingRef.current,
+      estRef.current, dividerBotRef.current, btnRef.current,
+      ...floatersRef.current,
+      ...(itemsRef.current ? Array.from(itemsRef.current.children) : []),
+    ]);
+
     gsap.set(welcomeRef.current,    { opacity: 0, y: -30 });
     gsap.set(dividerTopRef.current,  { scaleX: 0 });
     gsap.set(servingRef.current,     { opacity: 0, y: 20 });
@@ -115,7 +122,14 @@ export default function CoverPage() {
       yoyo:      true,
       ease:      "sine.inOut",
     });
-  }, []);
+  };
+
+  useEffect(() => { runAnimations(); }, []);
+
+  useEffect(() => {
+    if (!menuOpen) runAnimations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuOpen]);
 
   const handleOpenMenu = () => {
     playClick();
