@@ -10,8 +10,16 @@ export const projects: Project[] = [
     github: "https://github.com/Ishita-190/FitFlow_backend",
   },
   {
+    id: "rfsignalclassificationusingdeeplearning",
+    title: "RF Signal Classification using Deep Learning",
+    description: "a system that can listen to the radio frequency spectrum in real time and automatically identify what type of signal it is hearing,without any human intervention. Given a raw stream of IQ samples from a software-defined radio dongle, the system should classify the signal into one of several known categories with high confidence.",
+    stack: ["PyTorch", "SciPy", "Simulink", "pyrtlsdr", "python","RTL-SDR"],
+    live: "https://github.com/Ishita-190/RF-Signal-Classification-using-Deep-Learning",
+    github: "https://github.com/Ishita-190/RF-Signal-Classification-using-Deep-Learning",
+  },
+  {
     id: "ecochain",
-    title: "Eco Chain",
+    title: "Eco_Chain",
     description: "Waste classification system using CNN and MobileNet architectures with 87% accuracy for automated waste segregation. Integrated into a blockchain-based platform that incentivizes responsible waste disposal through eco credit rewards and visual tracking.",
     stack: ["Next.js", "Solidity", "Ethereum", "MobileNet", "TensorFlow", "IPFS", "Hardhat", "Vercel"],
     live: "https://eco-chain-1-s3vi.vercel.app/",
