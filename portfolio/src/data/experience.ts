@@ -9,6 +9,17 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    id: "dmrc",
+    org: "Delhi Metro Rail Corportation (DMRC)",
+    role: "Research Intern",
+    period: "July 2026 – Present",
+    location: "Hybrid",
+    bullets: [
+      "Working on developing an AI-based railway track fault detection system using computer vision techniques for automated defect identification.",
+      "Building a railway track simulation environment to generate and visualize different track conditions for model development and testing.",
+    ],
+  },
+  {
     id: "asyncapi",
     org: "AsyncAPI Initiative",
     role: "Mentee, AsyncAPI Maintainership Program 2026 (AMP'26)",
